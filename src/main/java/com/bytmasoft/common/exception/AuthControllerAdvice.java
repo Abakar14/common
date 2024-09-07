@@ -29,6 +29,37 @@ public class AuthControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
 	}
 
+
+	@ExceptionHandler(DSSUnauthorizedExpception.class)
+	public ResponseEntity<CustomErrorResponse> handleDSSUnauthorizedExpception(DSSUnauthorizedExpception ex, WebRequest request) {
+		String path = request.getDescription(false); // URL and query string
+
+		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.UNAUTHORIZED.value(), " Unauthorized request ",
+				"Unauthorized request  at: " + path);
+
+		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<CustomErrorResponse> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+		String path = request.getDescription(false); // URL and query string
+
+		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.FORBIDDEN.value(), "Access Denied",
+				"Access Denied at: " + path);
+
+		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+	}
+
+	@ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+	public ResponseEntity<CustomErrorResponse> handleAuthenticationException(AuthenticationCredentialsNotFoundException ex, WebRequest request) {
+
+		String path = request.getDescription(false);
+		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.UNAUTHORIZED.value() , "Unauthorized",
+				"Unauthorized access attempt at: " + path);
+		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+	}
+
+
 	@ExceptionHandler(DSSConfilictExpception.class)
 	public ResponseEntity<CustomErrorResponse> handleDSSConfilictExpception(DSSConfilictExpception ex, WebRequest request) {
 		String path = request.getDescription(false); // URL and query string
@@ -46,31 +77,34 @@ public class AuthControllerAdvice extends ResponseEntityExceptionHandler{
 		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.BAD_REQUEST.value(), "Bad Request",
 				"Bad Request  at: " + path);
 
-		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
-
-
-	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<CustomErrorResponse> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+	@ExceptionHandler(DSSServiceUnavailableExpception.class)
+	public ResponseEntity<CustomErrorResponse> handleDSSServiceUnavailableExpception(DSSServiceUnavailableExpception ex, WebRequest request) {
 		String path = request.getDescription(false); // URL and query string
 
-		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.FORBIDDEN.value(), "Access Denied",
-				"Access Denied at: " + path);
+		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.SERVICE_UNAVAILABLE.value(), "Service Unavailable",
+				"Service Unavailable  at: " + path);
 
-		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+		return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<CustomErrorResponse> handleNullPointerException(NullPointerException ex, WebRequest request) {
+
+		String path = request.getDescription(false); // URL and query string
+
+		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.CONFLICT.value(), "NULL Pointer Exception",
+				"NULL Pointer at: " + path);
+
+		return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
+
 	}
 
 
-	// Handle AuthenticationException (when no authentication is present or the user is not authenticated)
-	@ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-	public ResponseEntity<CustomErrorResponse> handleAuthenticationException(AuthenticationCredentialsNotFoundException ex, WebRequest request) {
 
-		String path = request.getDescription(false);
-		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.UNAUTHORIZED.value() , "Unauthorized",
-				"Unauthorized access attempt at: " + path);
-		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-	}
+
 
 	// Handle other exceptions globally if needed
 	@ExceptionHandler(Exception.class)
@@ -82,13 +116,11 @@ public class AuthControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public  ResponseEntity<CustomErrorResponse> handelEntityNotFoundExcption(EntityNotFoundException ex, WebRequest request){
+	@ExceptionHandler(DSSEntityNotFoundException.class)
+	public  ResponseEntity<CustomErrorResponse> handelDSSEntityNotFoundException(DSSEntityNotFoundException ex, WebRequest request){
 		String path = request.getDescription(false);
 		CustomErrorResponse errorResponse = customErrorResponse(HttpStatus.NOT_FOUND.value(),  "Not found ",
 				ex.getMessage());
-
-
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
