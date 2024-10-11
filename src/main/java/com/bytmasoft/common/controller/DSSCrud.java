@@ -1,10 +1,13 @@
 package com.bytmasoft.common.controller;
 
 import com.bytmasoft.common.exception.DSSEntityNotFoundException;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,10 @@ public interface DSSCrud <D, C, U>{
     ResponseEntity<D> save(@RequestBody @Valid C c);
 
     @GetMapping
-    Page<D> findAll(@PageableDefault(size = 10) @ParameterObject Pageable pageable);
+    Page<D> findAll(
+            @ParameterObject
+            @Parameter(description = "Pagination information", required = false, schema = @Schema(implementation = Pageable.class))
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable pageable);
 
     @GetMapping("list")
     List<D> findList();

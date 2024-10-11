@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.bytmasoft'
-version = '1.0.6'
+version = '1.0.8'
 
 java {
 	toolchain {
@@ -24,7 +24,7 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifactId = 'dss-common'
-			version = '1.0.6'
+			version = '1.0.8'
 			from components.java
 			versionMapping {
 				usage('java-api') {
@@ -74,8 +74,6 @@ dependencyManagement {
 dependencies {
 	api 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openapiVersion}"
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"

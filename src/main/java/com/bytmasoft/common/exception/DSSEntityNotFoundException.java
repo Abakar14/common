@@ -4,8 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value =  HttpStatus.NOT_FOUND)
-public class DSSEntityNotFoundException extends RuntimeException{
-
+public class DSSEntityNotFoundException extends DSSApplicationException{
     /**
      *
      */
@@ -15,19 +14,18 @@ public class DSSEntityNotFoundException extends RuntimeException{
         super();
     }
 
-    public DSSEntityNotFoundException(final String message, final Throwable e) {
-        super(message, e);
-    }
-
-    public DSSEntityNotFoundException(final String message) {
+    public DSSEntityNotFoundException(String message) {
         super(message);
     }
 
-    public DSSEntityNotFoundException(final Throwable e) {
-        super(e);
+    public DSSEntityNotFoundException(String message, Exception ex) {
+        super(message, ex);
     }
 
 
+    public DSSEntityNotFoundException(Exception ex) {
+        super(ex);
+    }
 
 
 
