@@ -26,22 +26,10 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), " SERVICE_SPECIFIC_ERROR",
-				"SERVICE_SPECIFIC_ERROR at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
-/*	@ExceptionHandler(ExpiredJwtException.class)
-	public ResponseEntity<DSSErrorResponse> handleExpiredJwtException(ExpiredJwtException ex, WebRequest request) {
-		logger.error("An error occurred: {}", ex.getMessage(), ex);
-		String path = request.getDescription(false); // URL and query string
-
-		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.UNAUTHORIZED.value(), " JWT Token Expired ",
-				"JWT Token has expired  at: " + path);
-
-		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-	}*/
-
 
 	@ExceptionHandler(DSSUnauthorizedExpception.class)
 	public ResponseEntity<DSSErrorResponse> handleDSSUnauthorizedExpception(DSSUnauthorizedExpception ex, WebRequest request) {
@@ -49,7 +37,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.UNAUTHORIZED.value(), " Unauthorized request ",
-				"Unauthorized request  at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
 	}
@@ -61,7 +49,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.CONFLICT.value(), "Conflict ",
-				"Conflict   at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
 	}
@@ -72,7 +60,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.BAD_REQUEST.value(), "Bad Request",
-				"Bad Request  at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
@@ -83,7 +71,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.SERVICE_UNAVAILABLE.value(), "Service Unavailable",
-				"Service Unavailable  at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
 	}
@@ -94,7 +82,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "NULL Pointer Exception",
-				"NULL Pointer at: " + path);
+				ex.getMessage()+"  at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -106,7 +94,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		logger.error("An error occurred: {}", ex.getMessage(), ex);
 		String path = request.getDescription(false);
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.NOT_FOUND.value(),  "Not found ",
-				ex.getMessage());
+				ex.getMessage() + " at: "+path);
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 		
 	}
@@ -119,7 +107,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		DSSErrorResponse errorResponse = customErrorResponse(
 				HttpStatus.NOT_FOUND.value(),
 				"Document not found ",
-				 ex.getMessage() );
+				 ex.getMessage() + " at: "+path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	}
@@ -131,7 +119,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), " no value found ",
-				"Token expired  at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -144,7 +132,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.NOT_IMPLEMENTED.value(), " Server does not support ",
-				"Server does not Support at: " + path);
+				ex.getMessage()+" at: " + path);
 
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -155,7 +143,7 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.GATEWAY_TIMEOUT.value(), " Server timeout ",
-				"The server did not receive a timely response: " + path);
+				ex.getMessage()+" at: " + path);
 		return new ResponseEntity<>(errorResponse, HttpStatus.GATEWAY_TIMEOUT);
 	}
 
@@ -165,11 +153,9 @@ public class DSSControllerAdvice extends ResponseEntityExceptionHandler{
 		String path = request.getDescription(false); // URL and query string
 
 		DSSErrorResponse errorResponse = customErrorResponse(HttpStatus.FORBIDDEN.value(), "Access Denied",
-				"Access Denied " + path);
+				ex.getMessage()+" at: " + path);
 		return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
 	}
-
-
 
 
 	private DSSErrorResponse customErrorResponse(int status , String error, String message) {

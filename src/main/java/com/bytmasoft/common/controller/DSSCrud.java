@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ public interface DSSCrud <D, C, U>{
     ResponseEntity<D> save(@RequestBody @Valid C c);
 
     @GetMapping
-    Page<D> findAll(
+    PagedModel<EntityModel<D>> findAll(
             @ParameterObject
             @Parameter(description = "Pagination information", required = false, schema = @Schema(implementation = Pageable.class))
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable pageable);
@@ -28,6 +30,24 @@ public interface DSSCrud <D, C, U>{
     @GetMapping("list")
     List<D> findList();
 
+    @PutMapping("/{id}/unlock")
+    ResponseEntity<D> unlock(@PathVariable Long id) throws DSSEntityNotFoundException;
+
+    @DeleteMapping({"/{id}/lockout"})
+    ResponseEntity<D> lockout(@PathVariable Long id) throws DSSEntityNotFoundException;
+
+    @DeleteMapping({"/{id}/markfordeletion"})
+    ResponseEntity<D> markfordeletion(@PathVariable Long id) throws DSSEntityNotFoundException;
+
+
+    @GetMapping("/count")
+    Long countAll();
+
+    @GetMapping("/active/count")
+    Long countAllActives();
+
+    @GetMapping("/locked/count")
+    Long countAllLocked();
 
     @GetMapping("/{id}")
     ResponseEntity<D> findById(@PathVariable Long id) throws DSSEntityNotFoundException;
