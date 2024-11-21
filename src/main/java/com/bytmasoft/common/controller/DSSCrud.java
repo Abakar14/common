@@ -21,11 +21,13 @@ public interface DSSCrud <D, C, U>{
     @PostMapping
     ResponseEntity<D> save(@RequestBody @Valid C c);
 
+/*
     @GetMapping
     PagedModel<EntityModel<D>> findAll(
             @ParameterObject
             @Parameter(description = "Pagination information", required = false, schema = @Schema(implementation = Pageable.class))
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC) Pageable pageable);
+*/
 
     @GetMapping("list")
     List<D> findList();
