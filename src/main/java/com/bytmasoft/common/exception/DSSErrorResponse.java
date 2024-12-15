@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DSSErrorResponse {
 
+    @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
     private int statusCode;
     private String errorCode;
